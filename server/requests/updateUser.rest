@@ -1,0 +1,7 @@
+POST http://localhost:3000/api/user/update/6581a1fb0e79f89ffc1fd256
+Content-Type: application/json
+
+{
+  "username": "testi2",
+  "email": "testi2@g.com"
+}
