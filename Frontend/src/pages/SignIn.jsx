@@ -10,6 +10,7 @@ export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { error, loading } = useSelector((state) => state.user);
 
+  
   const handleChange = (e) => {
     setFormData(
       {
@@ -22,7 +23,6 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      console.log('dispatch tehty')
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: {
@@ -30,9 +30,7 @@ export default function SignIn() {
         },
         body: JSON.stringify(formData),
       });
-      console.log('fetch tehty')
       const data = await res.json();
-      console.log('data saatu')
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         return;
@@ -43,7 +41,7 @@ export default function SignIn() {
       dispatch(signInFailure(error.message));
     }
   };
-
+  
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
