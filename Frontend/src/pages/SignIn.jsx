@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInFailure, signinSuccess } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ export default function SignIn() {
           className='bg-orange-300 p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80 font-semibold'
         > {loading ? 'Loading...' : 'Sign In!'}
         </button>
+        <OAuth />
       </form>
       <div className='flex gap-2 mt-2'>
         <p>Have no account yet?</p>
