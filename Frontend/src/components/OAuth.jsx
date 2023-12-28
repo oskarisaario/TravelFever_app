@@ -28,7 +28,7 @@ export default function OAuth() {
       })
       const data = await res.json();
       dispatch(signinSuccess(data));
-      navigate('/');
+      navigate('/homemap');
     } catch (error) {
       console.log('Could not sign in with google', error)
     }

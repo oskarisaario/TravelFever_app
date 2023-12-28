@@ -36,7 +36,7 @@ export default function SignIn() {
         return;
       }
       dispatch(signinSuccess(data));
-      navigate('/');
+      navigate('/homemap');
     } catch (error) {
       dispatch(signInFailure(error.message));
     }

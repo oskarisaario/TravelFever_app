@@ -1,13 +1,15 @@
 import express from 'express';
 
-import { create, getPins } from '../controllers/pin.controller.js';
+import { create, deletePin, getPins, updatePin } from '../controllers/pin.controller.js';
 
 
 const router = express.Router();
 
 
 router.post('/create', create);
-router.get('/get', getPins);
+router.get('/getPins', getPins);
+router.delete('/delete/:id', deletePin);
+router.post('/update/:id', updatePin);
 
 
 export default router;

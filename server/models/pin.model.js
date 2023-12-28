@@ -7,7 +7,11 @@ const pinSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Title: {
+  username: {
+    type: String,
+    required: true,
+  },
+  title: {
     type: String,
     required: true,
     min: 3,

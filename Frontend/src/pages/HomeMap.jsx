@@ -1,8 +1,10 @@
 import React from 'react'
 import Mapping from '../components/Mapping';
 
-export default function Home() {
+export default function HomeMap() {
   return (
-    <div>home</div>
+    <div>
+      <Mapping />
+    </div>
   )
 }

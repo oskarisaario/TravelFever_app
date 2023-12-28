@@ -1,4 +1,5 @@
 import Pin from '../models/pin.model.js';
+import { errorHandler } from "../utils/error.js"
 
 
 export const create = async (req, res, next) => {
@@ -7,7 +8,7 @@ export const create = async (req, res, next) => {
     await newPin.save();
     res.status(200).json(newPin);
   } catch (error) {
-    next(error);
+    next(errorHandler(401, 'Something went wrong while Creating new user!'));
   }
 };
 
@@ -17,6 +18,34 @@ export const getPins = async (req, res, next) => {
     const pins = await Pin.find();
     res.status(200).json(pins);
   } catch (error) {
-    next(error);
+    next(errorHandler(401, 'Could not load pins!'));
+  }
+};
+
+
+export const deletePin = async (req, res, next) => {
+  try {
+    await Pin.findByIdAndDelete(req.params.id);
+    res.status(200).json('Pin has been deleted');
+  } catch (error) {
+    next(errorHandler(401, 'Something went wrong, deleting pin failed!'));
+  }
+};
+
+
+export const updatePin = async (req, res, next) => {
+  console.log('ID', req.params.id)
+  try {
+    const updatedPin = await Pin.findByIdAndUpdate(req.params.id, {
+      $set: {
+        title: req.body.title,
+        description: req.body.description,
+        rating: req.body.rating
+      }
+    }, {new: true});
+    res.status(200).json(updatedPin);
+  } catch (error) {
+    console.log(error)
+    next(errorHandler(401, 'Could not update pin!'));
   }
 };
