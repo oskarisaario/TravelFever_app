@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.post('/create', create);
-router.get('/getPins', getPins);
+router.get('/getPins/:id', getPins);
 router.delete('/delete/:id', deletePin);
 router.post('/update/:id', updatePin);
 

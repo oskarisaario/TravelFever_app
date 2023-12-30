@@ -61,7 +61,7 @@ export default function SignIn() {
           <span className='text-orange-500 hover:underline'> Sign up</span>
         </Link>
       </div>
-      {error && <p className='text-red-500'>{error}</p>}
+      {error && <p className='text-red-500 text-center'>{error}</p>}
     </div>
   )
 }

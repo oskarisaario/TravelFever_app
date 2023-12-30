@@ -7,6 +7,10 @@ const pinSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  private: {
+    type: Boolean,
+    required: true
+  },
   username: {
     type: String,
     required: true,

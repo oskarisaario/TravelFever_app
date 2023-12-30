@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 import Pin from '../models/pin.model.js';
+import { updatePin, updatePinPrivate } from './pin.controller.js';
 import { errorHandler } from "../utils/error.js"
 import bcryptjs from 'bcryptjs';
 
@@ -16,12 +17,16 @@ export const updateUser = async (req, res, next) => {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
-        avatar: req.body.avatar
+        avatar: req.body.avatar,
+        private: req.body.private
       }
     }, {new: true});
 
     const {password, ...userWithoutPassword} = updatedUser._doc;
     res.status(200).json(userWithoutPassword);
+
+    updatePinPrivate(req.user.id, req.body.private);
+
 
   } catch (error) {
     next(error);

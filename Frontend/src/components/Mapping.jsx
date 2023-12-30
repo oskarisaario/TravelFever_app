@@ -30,7 +30,7 @@ export default function Mapping() {
   useEffect(() => {
     const getPins = async () => {
       try {
-        const res = await fetch('/api/pin/getPins');
+        const res = await fetch(`/api/pin/getPins/${currentUser._id}`);
         const data = await res.json();
         setPins(data);
       } catch (error) {
@@ -87,6 +87,7 @@ export default function Mapping() {
       rating,
       username: currentUser.username,
       userRef: currentUser._id,
+      private: currentUser.private
     }
     try {
       const res = await fetch('/api/pin/create', {
@@ -136,13 +137,12 @@ export default function Mapping() {
 
 
   const handleUpdateChange = (e) => {
-    console.log('rating', rating)
-    console.log('pinToUpdate.rating:', pinToUpdate.rating)
     setPinToUpdate({
       ...pinToUpdate,
       [e.target.id]: e.target.value
     });
   }
+
 
   const handleUpdatePin = async (e) => {
     e.preventDefault();
@@ -170,7 +170,6 @@ export default function Mapping() {
       setRating(null);
       setPinToUpdate(null);
     }
-
   };
 
 
@@ -292,7 +291,12 @@ export default function Mapping() {
                     <p className='font-semibold mt-1'>{pin.title}</p>
                   </div>
                   <div className='font-semibold'>
-                    <button onClick={() => handleDeletePin(pin._id)} className='bg-red-500 rounded-lg p-1 mb-2 ml-2 uppercase hover:opacity-90'>Delete</button>
+                    <button 
+                      onClick={() => handleDeletePin(pin._id)} 
+                      className='bg-red-500 rounded-lg p-1 mb-2 ml-2 uppercase hover:opacity-90'
+                    >
+                      Delete
+                    </button>
                     <button 
                       onClick={() => setPinToUpdate(pin)} 
                       className='bg-orange-300 rounded-lg p-1 md-2 ml-2 uppercase hover:opacity-90'                   
@@ -309,9 +313,9 @@ export default function Mapping() {
               style={{position: 'absolute', top: '65px', left: '12px'}}
               >No Pins Added yet
             </div>
-          )} : {pinToUpdate && (
+          )} : {pinToUpdate && showUserPinsMenu && (
             <div 
-              style={{position: 'absolute', top: '65px', left: '380px'}}
+              style={{position: 'absolute', top: '65px', left: '300px'}}
               className='flex flex-col bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg'
             >
               <form onSubmit={handleUpdatePin} className='flex flex-col gap-2 w-[250px]'>

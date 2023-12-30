@@ -22,6 +22,7 @@ export default function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [privateUser, setPrivateUser] = useState(currentUser.private);
 
 
   useEffect(() => {
@@ -63,6 +64,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
+      console.log('form', formData)
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
@@ -77,6 +79,7 @@ export default function Profile() {
       }
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
+      console.log(data)
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }
@@ -100,6 +103,19 @@ export default function Profile() {
     }
   };
 
+  
+  const handlePrivateUser = () => {
+    if (privateUser === false) {
+      console.log('päälle')
+      setPrivateUser(true);
+      setFormData({ ...formData, ['private']: true });
+    } else {
+      console.log('pois')
+      setPrivateUser(false);
+      setFormData({ ...formData, ['private']: false });
+    }
+  };
+
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
@@ -109,12 +125,13 @@ export default function Profile() {
         dispatch(signOutUserFailure(data.message));
         return;
       }
-      dispatch(deleteUserSuccess(data));
+      dispatch(signOutUserSuccess(data));
     } catch (error) {
       dispatch(signOutUserFailure(error.message));
     }
   };
-  
+  console.log('current',currentUser.private)
+  console.log('privateUser', privateUser)
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -166,7 +183,15 @@ export default function Profile() {
           className='border p-3 rounded-lg'
           onChange={handleChange}
         />
-        <button type='button'>Set profile private</button>
+        <label className="relative flex justify-between items-center group p-2 text-lg">
+          Set Your profile to private <span className='text-sm'> (so others wont see your pins)</span>
+          <input onChange={handlePrivateUser}
+            readOnly
+            id='private'
+            type="checkbox" checked={privateUser}
+            className="absolute left-1/2 -translate-x-1/2 w-full h-full peer appearance-none rounded-md cursor-pointer" />
+          <span className="cursor-pointer w-16 h-10 flex items-center flex-shrink-0 ml-4 p-1 bg-gray-300 rounded-full duration-300 ease-in-out peer-checked:bg-orange-300 after:w-8 after:h-8 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-6 group-hover:after:translate-x-1"></span>
+        </label>
         <button 
           disabled={loading}
           className='bg-orange-300 rounded-lg p-3 uppercase hover:opacity-90 disabled:opacity-80 font-semibold'

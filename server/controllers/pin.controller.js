@@ -16,7 +16,8 @@ export const create = async (req, res, next) => {
 export const getPins = async (req, res, next) => {
   try {
     const pins = await Pin.find();
-    res.status(200).json(pins);
+    const filteredPins = pins.filter(pin => pin.private === false && req.params.id !== pin.userRef || req.params.id === pin.userRef);
+    res.status(200).json(filteredPins);
   } catch (error) {
     next(errorHandler(401, 'Could not load pins!'));
   }
@@ -34,7 +35,6 @@ export const deletePin = async (req, res, next) => {
 
 
 export const updatePin = async (req, res, next) => {
-  console.log('ID', req.params.id)
   try {
     const updatedPin = await Pin.findByIdAndUpdate(req.params.id, {
       $set: {
@@ -48,4 +48,11 @@ export const updatePin = async (req, res, next) => {
     console.log(error)
     next(errorHandler(401, 'Could not update pin!'));
   }
+};
+
+
+export const updatePinPrivate = async (id, privateUser) => {
+  const updatedPin = await Pin.updateMany({userRef: id}, {
+    private: privateUser
+  }, {new: true})
 };
