@@ -64,7 +64,6 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      console.log('form', formData)
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
@@ -79,7 +78,6 @@ export default function Profile() {
       }
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
-      console.log(data)
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }
@@ -106,11 +104,9 @@ export default function Profile() {
   
   const handlePrivateUser = () => {
     if (privateUser === false) {
-      console.log('päälle')
       setPrivateUser(true);
       setFormData({ ...formData, ['private']: true });
     } else {
-      console.log('pois')
       setPrivateUser(false);
       setFormData({ ...formData, ['private']: false });
     }
@@ -130,8 +126,8 @@ export default function Profile() {
       dispatch(signOutUserFailure(error.message));
     }
   };
-  console.log('current',currentUser.private)
-  console.log('privateUser', privateUser)
+
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -184,7 +180,7 @@ export default function Profile() {
           onChange={handleChange}
         />
         <label className="relative flex justify-between items-center group p-2 text-lg">
-          Set Your profile to private <span className='text-sm'> (so others wont see your pins)</span>
+          Set Your profile to private <span className='text-sm'> (so others cant see your pins)</span>
           <input onChange={handlePrivateUser}
             readOnly
             id='private'

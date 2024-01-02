@@ -7,14 +7,12 @@ import { format } from 'timeago.js';
 
 
 
-
-
 export default function Mapping() {
   const { currentUser } = useSelector((state) => state.user)
   const [cursorLocation, setCursorLocation] = useState(null);
   const [userPins, setUserPins] = useState([]);
   const [showUserPinsMenu, setShowUserPinsMenu] = useState(false);
-
+  const [mapStyle, setMapStyle] = useState('light-v11');
   const [pinToUpdate, setPinToUpdate] = useState(null);
   const [pins, setPins] = useState([]);
   const [rating, setRating] = useState(null);
@@ -104,6 +102,7 @@ export default function Mapping() {
         }
         setPins([...pins, data]);
         setNewPlace(null);
+        setRating(0);
     } catch (error) {
       console.log(error.message);
     } 
@@ -173,6 +172,7 @@ export default function Mapping() {
   };
 
 
+
   return (
     <div>
       {/* SETUP MAP, MARKER, POPUP */}
@@ -181,7 +181,7 @@ export default function Mapping() {
         {...viewState}
         style={{width: "100vw", height: "94vh"}}
         onMove={evt => setViewState(evt.viewState)}
-        mapStyle="mapbox://styles/mapbox/light-v11"
+        mapStyle={`mapbox://styles/mapbox/${mapStyle}`}
         onDblClick={handleAddClick}
         position='relative'
       >  
@@ -315,7 +315,7 @@ export default function Mapping() {
             </div>
           )} : {pinToUpdate && showUserPinsMenu && (
             <div 
-              style={{position: 'absolute', top: '65px', left: '300px'}}
+              style={{position: 'absolute', top: '65px', left: '380px'}}
               className='flex flex-col bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg'
             >
               <form onSubmit={handleUpdatePin} className='flex flex-col gap-2 w-[250px]'>
@@ -368,6 +368,18 @@ export default function Mapping() {
               </form>
             </div>
           )}
+          <select 
+            className='bg-orange-300 rounded-lg p-3 m-3 font-semibold uppercase hover:opacity-90' 
+            style={{position: 'absolute', right: '1px'}}
+            value={mapStyle}
+            onChange={e => setMapStyle(e.target.value)}
+          >
+              <option value='dark-v11' className='font-semibold'>Dark</option>
+              <option value='light-v11' className='font-semibold'>Light</option>
+              <option value='satellite-v9' className='font-semibold'>Satellite</option>
+              <option value='streets-v12' className='font-semibold'>Streets</option>
+              <option value='outdoors-v12' className='font-semibold'>Outdoors</option>
+            </select>
       </Map>    
     </div>
   );

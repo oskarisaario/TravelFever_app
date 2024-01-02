@@ -56,3 +56,18 @@ export const updatePinPrivate = async (id, privateUser) => {
     private: privateUser
   }, {new: true})
 };
+
+export const getSearchedPins = async (req, res, next) => {
+  try {
+    const searchTerm = req.query.searchTerm || '';
+    const pins = await Pin.find({
+      '$or': [
+      {title: {$regex: searchTerm, $options: 'i'}},
+      {description: {$regex: searchTerm, $options: 'i'}},
+    ]});
+    const filteredPins = pins.filter(pin => pin.private === false);
+    res.status(200).json(filteredPins);
+  } catch (error) {
+    next(errorHandler(401, 'Could not load pins!'));
+  }
+};
