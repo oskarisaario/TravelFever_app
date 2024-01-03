@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentUser: null,
   error: null,
-  loading: false
+  loading: false,
+  userMapStyle: null
 };
 
 const userSlice = createSlice({
@@ -35,6 +36,9 @@ const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    updateMapStyle: (state, action) => {
+      state.userMapStyle = action.payload;
+    },
     deleteUserStart: (state) => {
       state.loading = true;
     },
@@ -54,6 +58,7 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.loading = false;
       state.error = null;
+      state.userMapStyle = null;
     },
     signOutUserFailure: (state, action) => {
       state.error = action.payload;
@@ -69,6 +74,7 @@ export const {
   updateUserStart,
   updateUserFailure,
   updateUserSuccess,
+  updateMapStyle,
   deleteUserStart,
   deleteUserFailure,
   deleteUserSuccess,

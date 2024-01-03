@@ -13,17 +13,19 @@ export default function Mapping() {
   const [cursorLocation, setCursorLocation] = useState(null);
   const [userPins, setUserPins] = useState([]);
   const [showUserPinsMenu, setShowUserPinsMenu] = useState(false);
-  const [mapStyle, setMapStyle] = useState(userMapStyle || 'light-v11');
+  const [mapStyle, setMapStyle] = useState(userMapStyle || 'dark-v11');
   const [pinToUpdate, setPinToUpdate] = useState(null);
   const [pins, setPins] = useState([]);
+  const [userPinColor, setUserPinColor] = useState('text-orange-500');
+  const [othersPinColor, setOthersPinColor] = useState('text-green-500');
   const [rating, setRating] = useState(null);
   const [starHover, setStarHover] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
   const dispatch = useDispatch();
   const [viewState, setViewState] = useState({
     longitude: 30,
-    latitude: 47,
-    zoom: 2.5
+    latitude: 27,
+    zoom: 2.5,
   });
   
   
@@ -62,8 +64,9 @@ export default function Mapping() {
 
 
   const handleAddClick = (e) => {
-    const latitude = e.lngLat.lat;
+    const latitude =  e.lngLat.lat;
     const longitude = e.lngLat.lng
+    setViewState({ ...viewState, zoom: 5, latitude, longitude});
     setNewPlace({
       lat: latitude,
       long: longitude
@@ -182,7 +185,7 @@ export default function Mapping() {
 
 
   return (
-    <div>
+    <div className='flex justify-between items-center  mx-auto'>
       {/* SETUP MAP, MARKER, POPUP */}
       <Map
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
@@ -192,6 +195,7 @@ export default function Mapping() {
         mapStyle={`mapbox://styles/mapbox/${mapStyle}`}
         onDblClick={handleAddClick}
         position='relative'
+        doubleClickZoom = {false}
       >  
       {pins.map((p) => (
       <Marker 
@@ -203,7 +207,7 @@ export default function Mapping() {
       >
         <div>
           <FaMapMarkerAlt 
-            className={currentUser._id === p.userRef ?'text-orange-500' : 'text-green-500'}
+            className={currentUser._id === p.userRef ? `${userPinColor}` : `${othersPinColor}`}
             style={{ fontSize: viewState.zoom * 7}}
             onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
           />
@@ -292,6 +296,8 @@ export default function Mapping() {
           {!showUserPinsMenu ? 'My pins' : 'Close'}
         </button>
           {userPins && showUserPinsMenu && userPins.length > 0 && (
+            <>
+            <p style={{position: 'absolute', top: '12px', left: '100px'}} className='bg-orange-300 rounded-lg p-3 font-semibold text-sm '>You have visited {userPins.length} places!</p>
             <div className='flex flex-col bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg' style={{position: 'absolute', top: '65px', left: '12px'}}>
               {userPins.map((pin) => (
                 <div key={pin._id} className='flex border-b-2 border-b-orange-300 gap-2 justify-between'>
@@ -315,6 +321,7 @@ export default function Mapping() {
                 </div>
               ))}
             </div>
+            </>
           )} : {userPins.length === 0 && showUserPinsMenu &&(
             <div 
               className='flex flex-col bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg font-semibold' 
@@ -376,12 +383,44 @@ export default function Mapping() {
               </form>
             </div>
           )}
+          <label style={{position: 'absolute', bottom: '1px', left: '1px'}} className='bg-orange-300 rounded-lg p-3 m-3 font-semibold'>Your pin color:
+            <select 
+              value={userPinColor} 
+              onChange={e => setUserPinColor(e.target.value)} 
+              className=''
+            >
+              <option value='text-orange-500' className='bg-orange-500 text-black font-semibold' defaultValue='text-orange-500'>Orange</option>
+              <option value='text-red-500' className='bg-red-800 text-black  font-semibold'>Red</option>
+              <option value='text-green-500' className='bg-green-500 text-black  font-semibold'>Green</option>
+              <option value='text-yellow-500' className='bg-yellow-200 text-black  font-semibold'>Yellow</option>
+              <option value='text-blue-500' className='bg-blue-500 text-black  font-semibold'>Blue</option>
+              <option value='text-pink-500' className='bg-pink-500 text-black  font-semibold'>Pink</option>
+              <option value='text-black' className=' text-black  font-semibold'>Black</option>
+            </select>
+          </label>
+          <label style={{position: 'absolute', right: '1px', bottom: '1px'}} className='bg-orange-300 rounded-lg p-3 m-3 font-semibold'>Others pin color:
+            <select 
+              value={othersPinColor} 
+              onChange={e => setOthersPinColor(e.target.value)} 
+              className=''
+            >
+              <option value='text-orange-500' className='bg-orange-500 text-black font-semibold'>Orange</option>
+              <option value='text-red-500' className='bg-red-800 text-black  font-semibold'>Red</option>
+              <option value='text-green-500' className='bg-green-500 text-black  font-semibold' defaultValue='text-green-500'>Green</option>
+              <option value='text-yellow-500' className='bg-yellow-200 text-black  font-semibold'>Yellow</option>
+              <option value='text-blue-500' className='bg-blue-500 text-black  font-semibold'>Blue</option>
+              <option value='text-pink-500' className='bg-pink-500 text-black  font-semibold'>Pink</option>
+              <option value='text-black' className=' text-black  font-semibold'>Black</option>
+            </select>
+          </label>
           <select 
             className='bg-orange-300 rounded-lg p-3 m-3 font-semibold uppercase hover:opacity-90' 
             style={{position: 'absolute', right: '1px'}}
             value={mapStyle}
             onChange={handelMapStyleChange}
+            placeholder='Select map style'
           >
+              <option className='font-semibold' value="none" disabled >Select map style</option>
               <option value='dark-v11' className='font-semibold'>Dark</option>
               <option value='light-v11' className='font-semibold'>Light</option>
               <option value='satellite-v9' className='font-semibold'>Satellite</option>

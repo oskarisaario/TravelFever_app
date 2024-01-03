@@ -26,7 +26,7 @@ export default function Search() {
       <h1 className='font-semibold text-orange-600 text-2xl'>Search results</h1>
       <div className='flex flex-col md:flex-wrap'>
       {pins.map((pin) => (
-        <div className='flex flex-col gap-2 border border-orange-300 p-2 m-2 hover:shadow-lg transition-shadow shadow-md' key={pin._id}>
+        <div className='flex flex-col gap-2 border border-orange-300 p-2 mt-2 hover:shadow-lg transition-shadow shadow-md' key={pin._id}>
           <label className=' text-lg text-orange-600 w-auto'>Place</label>
           <h4 className='text-base'>{pin.title}</h4>
           <label className=' text-lg text-orange-600'>Description</label>

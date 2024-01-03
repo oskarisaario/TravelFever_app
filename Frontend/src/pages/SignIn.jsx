@@ -46,8 +46,8 @@ export default function SignIn() {
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
-        <input onChange={handleChange} type='text' placeholder='Username' id='username' className='border p-3 rounded-lg' />
-        <input onChange={handleChange} type='password' placeholder='Password' id='password' className='border p-3 rounded-lg' />
+        <input onChange={handleChange} type='text' placeholder='Username' id='username' className='border p-3 rounded-lg' required />
+        <input onChange={handleChange} type='password' placeholder='Password' id='password' className='border p-3 rounded-lg' required />
         <button 
           disabled={loading}
           className='bg-orange-300 p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-80 font-semibold'
