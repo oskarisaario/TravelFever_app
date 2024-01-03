@@ -56,9 +56,9 @@ export default function SignIn() {
         <OAuth />
       </form>
       <div className='flex gap-2 mt-2'>
-        <p>Have no account yet?</p>
+        <p>No account yet?</p>
         <Link to={'/sign-up'}>
-          <span className='text-orange-500 hover:underline'> Sign up</span>
+          <span className='text-orange-500 hover:underline'> Sign up here</span>
         </Link>
       </div>
       {error && <p className='text-red-500 text-center'>{error}</p>}
