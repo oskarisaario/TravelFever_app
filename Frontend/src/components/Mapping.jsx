@@ -1,30 +1,32 @@
 import {useState, useEffect} from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Map, { Marker, Popup } from 'react-map-gl';
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import { format } from 'timeago.js';
+import { updateMapStyle } from '../redux/user/userSlice';
 
 
 
 export default function Mapping() {
-  const { currentUser } = useSelector((state) => state.user)
+  const { currentUser, userMapStyle } = useSelector((state) => state.user);
   const [cursorLocation, setCursorLocation] = useState(null);
   const [userPins, setUserPins] = useState([]);
   const [showUserPinsMenu, setShowUserPinsMenu] = useState(false);
-  const [mapStyle, setMapStyle] = useState('light-v11');
+  const [mapStyle, setMapStyle] = useState(userMapStyle || 'light-v11');
   const [pinToUpdate, setPinToUpdate] = useState(null);
   const [pins, setPins] = useState([]);
   const [rating, setRating] = useState(null);
   const [starHover, setStarHover] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
+  const dispatch = useDispatch();
   const [viewState, setViewState] = useState({
     longitude: 30,
     latitude: 47,
-    zoom: 3
+    zoom: 2.5
   });
-
-
+  
+  
   useEffect(() => {
     const getPins = async () => {
       try {
@@ -169,6 +171,12 @@ export default function Mapping() {
       setRating(null);
       setPinToUpdate(null);
     }
+  };
+
+  
+  const handelMapStyleChange = (e) => {
+    dispatch(updateMapStyle(e.target.value));
+    setMapStyle(e.target.value)
   };
 
 
@@ -372,7 +380,7 @@ export default function Mapping() {
             className='bg-orange-300 rounded-lg p-3 m-3 font-semibold uppercase hover:opacity-90' 
             style={{position: 'absolute', right: '1px'}}
             value={mapStyle}
-            onChange={e => setMapStyle(e.target.value)}
+            onChange={handelMapStyleChange}
           >
               <option value='dark-v11' className='font-semibold'>Dark</option>
               <option value='light-v11' className='font-semibold'>Light</option>
