@@ -1,21 +1,25 @@
 import { FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import {signOutUserStart,
+  signOutUserFailure,
+  signOutUserSuccess } from '../redux/user/userSlice'
 
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams();
     urlParams.set('searchTerm', searchTerm);
     const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
+    navigate(`/search?${searchQuery}`, {state: searchTerm,replace: true});
   };
 
   
@@ -26,6 +30,22 @@ export default function Header() {
       setSearchTerm(searchTermFromUrl);
     }
   }, [location.search]);
+
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
+    }
+  };
 
   return (
     <header className='bg-orange-300 shadow-md'>
@@ -67,6 +87,7 @@ export default function Header() {
               <li className='hidden sm:inline text-orange-600 font-semibold hover:underline'>Home</li>
             </Link>
           )}
+          {currentUser && (<li onClick={handleSignOut} className='text-orange-600 font-semibold cursor-pointer hover:underline'>Sign out</li>)}
           <Link to='/profile'>
           {currentUser ? (
             <img src={currentUser.avatar} alt='profile' className='rounded-full h-7 w-7 object-cover' />

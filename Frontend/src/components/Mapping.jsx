@@ -185,7 +185,7 @@ export default function Mapping() {
 
 
   return (
-    <div className='flex justify-between items-center  mx-auto'>
+    <div className='flex justify-between items-center mx-auto'>
       {/* SETUP MAP, MARKER, POPUP */}
       <Map
         mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
@@ -291,13 +291,13 @@ export default function Mapping() {
         <button 
           onClick={showUserPins} 
           style={{position: 'absolute'}} 
-          className='bg-orange-300 rounded-lg p-3 m-3 font-semibold uppercase hover:opacity-90'
+          className=' bg-orange-300  rounded-lg p-2 m-3 font-semibold uppercase hover:opacity-90'
         >
           {!showUserPinsMenu ? 'My pins' : 'Close'}
         </button>
           {userPins && showUserPinsMenu && userPins.length > 0 && (
             <>
-            <p style={{position: 'absolute', top: '12px', left: '100px'}} className='bg-orange-300 rounded-lg p-3 font-semibold text-sm '>You have visited {userPins.length} places!</p>
+            <p style={{position: 'absolute', top: '12px', left: '85px'}} className='bg-orange-300 rounded-lg p-2 font-semibold text-sm '>You have visited {userPins.length} places!</p>
             <div className='flex flex-col bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg' style={{position: 'absolute', top: '65px', left: '12px'}}>
               {userPins.map((pin) => (
                 <div key={pin._id} className='flex border-b-2 border-b-orange-300 gap-2 justify-between'>
@@ -383,7 +383,7 @@ export default function Mapping() {
               </form>
             </div>
           )}
-          <label style={{position: 'absolute', bottom: '1px', left: '1px'}} className='bg-orange-300 rounded-lg p-3 m-3 font-semibold'>Your pin color:
+          <label style={{position: 'absolute', bottom: '30px', left: '1px'}} className='bg-orange-300 rounded-lg p-2 m-3 font-semibold'>Your pin color:
             <select 
               value={userPinColor} 
               onChange={e => setUserPinColor(e.target.value)} 
@@ -398,7 +398,7 @@ export default function Mapping() {
               <option value='text-black' className=' text-black  font-semibold'>Black</option>
             </select>
           </label>
-          <label style={{position: 'absolute', right: '1px', bottom: '1px'}} className='bg-orange-300 rounded-lg p-3 m-3 font-semibold'>Others pin color:
+          <label style={{position: 'absolute', right: '1px', bottom: '30px'}} className='bg-orange-300 rounded-lg p-2 m-3 font-semibold'>Others pin color:
             <select 
               value={othersPinColor} 
               onChange={e => setOthersPinColor(e.target.value)} 
@@ -414,19 +414,19 @@ export default function Mapping() {
             </select>
           </label>
           <select 
-            className='bg-orange-300 rounded-lg p-3 m-3 font-semibold uppercase hover:opacity-90' 
+            className='bg-orange-300 rounded-lg p-2 m-3 font-semibold hover:opacity-90' 
             style={{position: 'absolute', right: '1px'}}
             value={mapStyle}
             onChange={handelMapStyleChange}
             placeholder='Select map style'
           >
-              <option className='font-semibold' value="none" disabled >Select map style</option>
-              <option value='dark-v11' className='font-semibold'>Dark</option>
-              <option value='light-v11' className='font-semibold'>Light</option>
-              <option value='satellite-v9' className='font-semibold'>Satellite</option>
-              <option value='streets-v12' className='font-semibold'>Streets</option>
-              <option value='outdoors-v12' className='font-semibold'>Outdoors</option>
-            </select>
+            <option className='font-semibold' value="none" disabled >Select map style</option>
+            <option value='dark-v11' className='font-semibold'>Dark</option>
+            <option value='light-v11' className='font-semibold'>Light</option>
+            <option value='satellite-v9' className='font-semibold'>Satellite</option>
+            <option value='streets-v12' className='font-semibold'>Streets</option>
+            <option value='outdoors-v12' className='font-semibold'>Outdoors</option>
+          </select>
       </Map>    
     </div>
   );

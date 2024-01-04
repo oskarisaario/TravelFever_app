@@ -11,8 +11,7 @@ export default function Home() {
           <span className='text-orange-600'> Sign in </span>
           and add
           <br/>
-          all the places you have
-          
+          all the places you have        
           <span className='text-orange-600'> traveled</span><br/>
           <span>to the <span className='text-orange-600'>map</span> with description and ranking</span><br/>
           <span>and conquer the whole <span className='text-orange-600'>world</span>!</span>
