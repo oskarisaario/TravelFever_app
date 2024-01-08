@@ -57,8 +57,14 @@ export default function Mapping() {
         console.log(error);
       }
     }
+    if (onlyMyPins) {
+      setPinsToView(userPins);
+    } else {
+      setPinsToView(pins);
+    }
     getPins();
     getUserPins();
+
   }, [pins]);
 
 
@@ -174,6 +180,7 @@ export default function Mapping() {
         }
         setRating(null);
         setPinToUpdate(null);
+        console.log(data)
     } catch (error) {
       console.log(error.message);
       setRating(null);
@@ -313,7 +320,7 @@ export default function Mapping() {
           {userPins && showUserPinsMenu && userPins.length > 0 && (
             <>
             <p style={{position: 'absolute', top: '12px', left: '85px'}} className='bg-orange-300 rounded-lg p-2 font-semibold text-sm '>You have visited {userPins.length} places!</p>
-            <div className='flex flex-col bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg' style={{position: 'absolute', top: '65px', left: '12px'}}>
+            <div className='flex flex-col mr-2 md:gap-2 flex-grow overflow-y-auto relative min-h-[300px] md:h-3/4 bg-orange-100 p-3 border-2 border-orange-300 gap-4 rounded-lg' style={{position: 'absolute', top: '65px', left: '12px'}}>
               {userPins.map((pin) => (
                 <div key={pin._id} className='flex border-b-2 border-b-orange-300 gap-2 justify-between'>
                   <div>
@@ -398,7 +405,7 @@ export default function Mapping() {
               </form>
             </div>
           )}
-          <label style={{position: 'absolute', bottom: '30px', left: '1px'}} className='bg-orange-300 rounded-lg p-2 m-3 font-semibold'>Your pin color:
+          <label style={{position: 'absolute', bottom: '30px', right: '195px'}} className='bg-orange-300 rounded-lg p-2 m-3 font-semibold'>Your pin color:
             <select 
               value={userPinColor} 
               onChange={e => setUserPinColor(e.target.value)} 
