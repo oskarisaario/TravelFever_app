@@ -22,6 +22,7 @@ export default function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [privateUser, setPrivateUser] = useState(currentUser.private);
 
 
@@ -96,6 +97,7 @@ export default function Profile() {
         return;
       }
       dispatch(deleteUserSuccess(data));
+      setDeleteSuccess(true);
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
@@ -201,6 +203,7 @@ export default function Profile() {
       </div>
       <p className='text-red-700 mt-4 text-center'>{error ? error : '' }</p>
       <p className='text-green-700 mt-4 text-center'>{updateSuccess ? 'User is updated succesfully!': ''}</p>
+      <p className='text-green-700 mt-4 text-center'>{deleteSuccess ? 'User and user pins have been deleted succesfully!': ''}</p>
     </div>
   )
 }
