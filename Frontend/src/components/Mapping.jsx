@@ -10,8 +10,9 @@ import { updateMapStyle } from '../redux/user/userSlice';
 
 export default function Mapping() {
   const { currentUser, userMapStyle } = useSelector((state) => state.user);
-  const [cursorLocation, setCursorLocation] = useState(null);
   const [userPins, setUserPins] = useState([]);
+  const [pinsToView, setPinsToView] = useState([]);
+  const [cursorLocation, setCursorLocation] = useState(null);
   const [showUserPinsMenu, setShowUserPinsMenu] = useState(false);
   const [mapStyle, setMapStyle] = useState(userMapStyle || 'dark-v11');
   const [pinToUpdate, setPinToUpdate] = useState(null);
@@ -21,6 +22,7 @@ export default function Mapping() {
   const [rating, setRating] = useState(null);
   const [starHover, setStarHover] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
+  const [onlyMyPins, setOnlyMypins] = useState(true);
   const dispatch = useDispatch();
   const [viewState, setViewState] = useState({
     longitude: 30,
@@ -48,6 +50,9 @@ export default function Mapping() {
           return;
         }
         setUserPins(data);
+        if (pinsToView.length === 0) {
+          setPinsToView(data)
+        }
       } catch (error) {
         console.log(error);
       }
@@ -66,7 +71,7 @@ export default function Mapping() {
   const handleAddClick = (e) => {
     const latitude =  e.lngLat.lat;
     const longitude = e.lngLat.lng
-    setViewState({ ...viewState, zoom: 5, latitude, longitude});
+    setViewState({ ...viewState, latitude, longitude});
     setNewPlace({
       lat: latitude,
       long: longitude
@@ -182,6 +187,16 @@ export default function Mapping() {
     setMapStyle(e.target.value)
   };
 
+  const handleViewPins = () => {
+    if (onlyMyPins) {
+      setOnlyMypins(false);
+      setPinsToView(pins);
+    } else {
+      setOnlyMypins(true);
+      setPinsToView(userPins)
+    }
+  };
+
 
 
   return (
@@ -196,8 +211,8 @@ export default function Mapping() {
         onDblClick={handleAddClick}
         position='relative'
         doubleClickZoom = {false}
-      >  
-      {pins.map((p) => (
+      > 
+      {pinsToView.map((p) => (
       <Marker 
         key={p._id}
         latitude={p.lat}
@@ -427,6 +442,18 @@ export default function Mapping() {
             <option value='streets-v12' className='font-semibold'>Streets</option>
             <option value='outdoors-v12' className='font-semibold'>Outdoors</option>
           </select>
+          <span 
+            style={{position: 'absolute', right: '150px', top: '15px'}} 
+            className=' bg-orange-300 rounded-lg p-1 mr-2'>
+          <label className='font-semibold'>Show only my pins</label>
+          <input 
+            type="checkbox" 
+            style={{ verticalAlign: 'text-bottom' }} 
+            className='ml-1 w-4 h-4 text-orange-500 accent-orange-600'
+            onChange={handleViewPins}
+            checked={onlyMyPins}
+          />
+          </span>
       </Map>    
     </div>
   );
