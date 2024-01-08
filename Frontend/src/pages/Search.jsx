@@ -10,11 +10,11 @@ export default function Search() {
   const [notFound, setNotFound] = useState(false);
 
 
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get('searchTerm');
     setGoToPin({})
-
 
     const fetchPins = async () => {
       try {
@@ -34,6 +34,7 @@ export default function Search() {
 
     fetchPins();
   }, [state]);
+
 
 
 

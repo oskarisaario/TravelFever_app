@@ -8,6 +8,9 @@ import userRouter from './routes/user.route.js';
 import pinRouter from './routes/pin.route.js';
 import authRouter from './routes/auth.route.js';
 
+//for build
+import path from 'path';
+
 
 //Connect to database
 mongoose.connect(process.env.MONGO_URL).then(() => {
@@ -16,6 +19,8 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
   .catch((error) => {
     console.log(error);
   });
+
+  const __dirname = path.resolve();
 
 
 const app = express();
@@ -33,6 +38,12 @@ app.use('/api/user', userRouter);
 app.use('/api/pin', pinRouter);
 app.use('/api/auth', authRouter);
 
+//for build
+app.use(express.static(path.join(__dirname, '/Frontend/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Frontend', 'dist', 'index.html'));
+})
 
 //Middleware to handle errors
 app.use((error, req, res, next) => {
